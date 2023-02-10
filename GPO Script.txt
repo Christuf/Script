@@ -1,0 +1,18 @@
+# Define the location of the installer package
+$installer = "\\path\to\av-software.exe"
+
+# Check if the software is already installed
+$installed = (Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -eq "AV Software"})
+
+# If the software is not already installed, proceed with the installation
+if (!$installed) {
+    Start-Process -FilePath $installer -ArgumentList "/quiet" -Wait
+}
+
+# Confirm that the software is installed
+$installed = (Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -eq "AV Software"})
+if ($installed) {
+    Write-Output "AV Software has been installed successfully."
+} else {
+    Write-Output "AV Software installation failed."
+}
